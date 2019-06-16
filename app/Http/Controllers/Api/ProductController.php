@@ -12,16 +12,33 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends Controller
 {
+    /**
+     * @param Restaurant $restaurant
+     * @param ProductRepository $repository
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function index(Restaurant $restaurant, ProductRepository $repository)
     {
         return $repository->paginate($restaurant);
     }
 
+    /**
+     * @param Restaurant $restaurant
+     * @param ProductRepository $repository
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function store(Restaurant $restaurant, ProductRepository $repository, Request $request)
     {
         return $repository->create($restaurant, $request->request->all());
     }
 
+    /**
+     * @param Restaurant $restaurant
+     * @param ProductRepository $repository
+     * @param $product
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
+     */
     public function show(Restaurant $restaurant, ProductRepository $repository, $product)
     {
         $product = $repository->findByRestaurant($restaurant, $product);
@@ -33,6 +50,13 @@ class ProductController extends Controller
         return $product;
     }
 
+    /**
+     * @param Restaurant $restaurant
+     * @param ProductRepository $repository
+     * @param $product
+     * @param Request $request
+     * @return Product
+     */
     public function update(Restaurant $restaurant, ProductRepository $repository, $product, Request $request)
     {
         /** @var Product $product */
@@ -47,6 +71,12 @@ class ProductController extends Controller
         return $product;
     }
 
+    /**
+     * @param Restaurant $restaurant
+     * @param ProductRepository $repository
+     * @param $product
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
+     */
     public function destroy(Restaurant $restaurant, ProductRepository $repository, $product)
     {
         /** @var Product $product */
